@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: 🐍 Generate Snake Contribution GIF
+on:
+  workflow_dispatch: # Manual dispatch
+  schedule:
+    - cron: '0 1 * * 0' # At 01:00 on Sunday.
+jobs:
+  snake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Generate Snake
+        uses: Platane/snk@master
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          gif_out_path: assets/github-snake.gif
+          svg_out_path: assets/github-snake.svg          
+      # Commit the changes
+      - name: Commit files
+        run: |
+          git config user.email "18btcse43@suiit.ac.in"
+          git config user.name "RajKishor "
+          git add .
+          git commit -m ":snake: Updates Snake Contribution Animation"
+      # Push the changes
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
